@@ -1,7 +1,7 @@
 // @ts-check
 import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { defineConfig, fontProviders } from 'astro/config';
+import { defineConfig } from 'astro/config';
 
 // 公開ドメインが決まったら設定する。例: https://example.com
 const site = process.env.SITE_URL || undefined;
@@ -30,33 +30,4 @@ const sitemap = {
 export default defineConfig({
 	site,
 	integrations: [sitemap],
-	fonts: [
-		{
-			provider: fontProviders.google(),
-			name: 'Shippori Mincho',
-			cssVariable: '--font-mincho',
-			weights: [500, 600, 700],
-			styles: ['normal'],
-			display: 'swap',
-			fallbacks: ['Yu Mincho', 'Hiragino Mincho ProN', 'serif'],
-		},
-		{
-			provider: fontProviders.google(),
-			name: 'Zen Kaku Gothic New',
-			cssVariable: '--font-gothic',
-			weights: [400, 500, 700],
-			styles: ['normal'],
-			display: 'swap',
-			fallbacks: ['Yu Gothic', 'Hiragino Sans', 'sans-serif'],
-		},
-		{
-			provider: fontProviders.google(),
-			name: 'Outfit',
-			cssVariable: '--font-latin',
-			weights: [400, 500],
-			styles: ['normal'],
-			display: 'swap',
-			fallbacks: ['Avenir Next', 'sans-serif'],
-		},
-	],
 });
