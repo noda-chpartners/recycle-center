@@ -1,17 +1,488 @@
 ---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { business, faqs, mapQuery, services } from '../data/site';
+import hero from '../assets/images/PHOTO-2026-09-10-23-45-32(3).jpg';
+import appliances from '../assets/images/PHOTO-2026-09-10-23-45-32(1).jpg';
+import washers from '../assets/images/PHOTO-2026-09-10-23-49-22(2).jpg';
+import storage from '../assets/images/PHOTO-2026-09-10-23-45-32(4).jpg';
+import microwaves from '../assets/images/PHOTO-2026-09-10-23-49-22.jpg';
+import cookers from '../assets/images/PHOTO-2026-09-10-23-49-22(1).jpg';
+import stoves from '../assets/images/PHOTO-2026-09-10-23-49-22(3).jpg';
+import street from '../assets/images/PHOTO-2026-09-10-23-45-32.jpg';
+import shelves from '../assets/images/PHOTO-2026-09-10-23-45-32(2).jpg';
 
+const mapEmbed = `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&hl=ja&z=16&output=embed`;
+const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
+
+const serviceIcons = {
+	collect: 'box',
+	move: 'truck',
+	tidy: 'home',
+	shop: 'tag',
+} as const;
+
+const ticker = ['不用品回収', '引越し', '片付け', '中古品販売', '家具の出張買取', '家電', '夜間対応'];
+
+const gallery = [
+	{
+		src: storage,
+		alt: '食器棚や収納ケース、鏡が並ぶ店内',
+		caption: '家具と収納',
+		area: 'a',
+		pos: 'center 42%',
+		widths: [480, 800, 1200],
+		sizes: '(max-width: 800px) 100vw, 42vw',
+	},
+	{
+		src: washers,
+		alt: '並べて販売されている洗濯機',
+		caption: '洗濯機',
+		area: 'b',
+		pos: 'center 46%',
+		widths: [400, 739],
+		sizes: '(max-width: 800px) 50vw, 28vw',
+	},
+	{
+		src: street,
+		alt: '夜の店舗正面。看板に店名と不用品回収の文字がある',
+		caption: '店舗正面',
+		area: 'c',
+		pos: 'center 18%',
+		widths: [480, 800, 1200],
+		sizes: '(max-width: 800px) 50vw, 30vw',
+	},
+	{
+		src: microwaves,
+		alt: '棚に並んだ電子レンジとオーブンレンジ',
+		caption: '電子レンジ',
+		area: 'd',
+		pos: 'center 48%',
+		widths: [400, 739],
+		sizes: '(max-width: 800px) 50vw, 28vw',
+	},
+	{
+		src: cookers,
+		alt: '棚に並んだ炊飯器',
+		caption: '炊飯器',
+		area: 'e',
+		pos: 'center 68%',
+		widths: [400, 739],
+		sizes: '(max-width: 800px) 50vw, 34vw',
+	},
+	{
+		src: stoves,
+		alt: '棚に並んだガスコンロと炊飯器',
+		caption: 'ガスコンロ',
+		area: 'f',
+		pos: 'center 36%',
+		widths: [400, 739],
+		sizes: '(max-width: 800px) 100vw, 34vw',
+	},
+];
+
+const steps = [
+	{
+		num: '01',
+		title: 'ご連絡',
+		text: 'お電話、LINE、メールで、回収・引越し・片付け・来店のご希望をお知らせください。',
+	},
+	{
+		num: '02',
+		title: '内容の確認',
+		text: '品物の種類、量、場所を伺い、対応のご案内をします。',
+	},
+	{
+		num: '03',
+		title: '当日のご対応',
+		text: 'ご指定の場所へ伺います。中古品のお求めは、豊島の店舗へお越しください。',
+	},
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+	<header class="site-header" data-header>
+		<a class="brand" href="#top">
+			<span class="brand-mark" aria-hidden="true">
+				<svg viewBox="0 0 32 32" fill="none">
+					<path d="M6 10h20M6 16h13M6 22h20" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"></path>
+					<path d="M6 16h13" stroke="#C9954E" stroke-width="2.2" stroke-linecap="square"></path>
+				</svg>
+			</span>
+			<span class="brand-text">
+				<span class="brand-ja">リサイクルセンター</span>
+				<span class="brand-en">Recycle Center</span>
+			</span>
+		</a>
+
+		<nav class="desktop-nav" aria-label="主要">
+			<a href="#services" data-nav>サービス</a>
+			<a href="#gallery" data-nav>店内</a>
+			<a href="#flow" data-nav>流れ</a>
+			<a href="#access" data-nav>アクセス</a>
+			<a href="#faq" data-nav>質問</a>
+		</nav>
+
+		<div class="header-actions">
+			<a class="header-phone" href="tel:08079691804">
+				<Icon name="phone" size={16} />
+				<span>080-7969-1804</span>
+			</a>
+			<button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu-panel" aria-label="メニューを開く">
+				<span></span>
+				<span></span>
+			</button>
+		</div>
+	</header>
+
+	<nav class="nav-panel" id="menu-panel" aria-label="モバイル">
+		<a href="#services" data-nav>サービス</a>
+		<a href="#gallery" data-nav>店内</a>
+		<a href="#flow" data-nav>流れ</a>
+		<a href="#access" data-nav>アクセス</a>
+		<a href="#faq" data-nav>質問</a>
+		<a href="#contact" data-nav>お問い合わせ</a>
+		<a class="panel-phone" href="tel:08079691804">080-7969-1804</a>
+	</nav>
+
+	<main id="main">
+		<section class="hero" id="top">
+			<div class="hero-copy">
+				<h1 class="hero-title">
+					<span class="hero-kicker" data-hero-fade>北区豊島のリサイクルセンター</span>
+					<span class="line"><span class="line-inner" data-hero-line>まだ<span class="punct">、</span></span></span>
+					<span class="line"><span class="line-inner" data-hero-line>使える<span class="punct">。</span></span></span>
+				</h1>
+				<p class="hero-lead" data-hero-fade>
+					家具も家電も、次の暮らしへ。不用品の回収から、引越し、片付け、中古品の販売まで。北区豊島のリサイクルセンターです。
+				</p>
+				<div class="hero-actions" data-hero-fade>
+					<a class="btn btn-fill" href="tel:08079691804">
+						<Icon name="phone" size={18} />
+						080-7969-1804
+					</a>
+					<a class="btn btn-ghost" href="#access">
+						場所を見る
+						<Icon name="arrow" size={18} />
+					</a>
+				</div>
+				<dl class="hero-meta" data-hero-fade>
+					<div>
+						<dt>営業時間</dt>
+						<dd>8:00–22:00</dd>
+						<dd>定休日なし</dd>
+					</div>
+					<div>
+						<dt>最寄駅</dt>
+						<dd>王子神谷駅 徒歩14分</dd>
+						<dd>王子駅 徒歩22分</dd>
+					</div>
+				</dl>
+			</div>
+			<div class="hero-visual">
+				<div class="media" style="--pos: center 32%">
+					<Image
+						src={hero}
+						alt="東京都北区豊島にあるリサイクルセンターの店舗外観。夜間の看板に店名と電話番号が掲げられている"
+						class="hero-img"
+						widths={[640, 960, 1200]}
+						sizes="(max-width: 900px) 100vw, 58vw"
+						quality={82}
+						priority
+					/>
+				</div>
+				<p class="hero-vertical">何でもお電話ください</p>
+			</div>
+		</section>
+
+		<div class="marquee" aria-hidden="true">
+			<div class="marquee-track">
+				<p>
+					{ticker.map((item) => <span>{item}</span>)}
+				</p>
+				<p>
+					{ticker.map((item) => <span>{item}</span>)}
+				</p>
+			</div>
+		</div>
+
+		<section class="about">
+			<div class="wrap about-layout">
+				<div class="about-copy">
+					<p class="eyebrow" data-reveal>About</p>
+					<h2 data-reveal>
+						手放した道具が、<br />もう一度、誰かの役に立つ。
+					</h2>
+					<div class="about-body" data-reveal>
+						<p>
+							まだ使えるものは、次に必要とする人へ。役割を終えたものは、きちんと回収する。リサイクルセンターは、その両方を豊島の店舗で引き受けています。
+						</p>
+						<p>
+							冷蔵庫も、洗濯機も、電子レンジも、大きな家具も。一台のご相談から、お部屋の片付け、引越しの荷運びまで。営業は毎日 8:00から22:00。定休日はありません。事前にご連絡いただければ、夜間の対応もできます。
+						</p>
+					</div>
+					<ul class="facts" data-reveal>
+						<li>
+							<span>営業</span>
+							<strong>毎日 8:00–22:00</strong>
+						</li>
+						<li>
+							<span>定休日</span>
+							<strong>なし</strong>
+						</li>
+						<li>
+							<span>最寄駅</span>
+							<strong>王子神谷 徒歩14分</strong>
+						</li>
+					</ul>
+				</div>
+				<div class="about-photos">
+					<figure data-reveal>
+						<div class="media ratio-tall" style="--pos: center 40%">
+							<Image
+								src={appliances}
+								alt="店内に並ぶ洗濯機、冷蔵庫、扇風機、家具"
+								class="media-img"
+								widths={[480, 800, 1200]}
+								sizes="(max-width: 900px) 46vw, 24vw"
+								quality={78}
+							/>
+						</div>
+						<figcaption>家電と家具</figcaption>
+					</figure>
+					<figure data-reveal>
+						<div class="media ratio-main" style="--pos: center 48%">
+							<Image
+								src={shelves}
+								alt="電子レンジや冷蔵庫が置かれた店内の棚"
+								class="media-img"
+								widths={[480, 800, 1200]}
+								sizes="(max-width: 900px) 54vw, 32vw"
+								quality={78}
+							/>
+						</div>
+						<figcaption>店内</figcaption>
+					</figure>
+				</div>
+			</div>
+		</section>
+
+		<section class="services" id="services">
+			<div class="wrap">
+				<header class="section-intro" data-reveal>
+					<p class="eyebrow">Services</p>
+					<h2>ご依頼いただけること</h2>
+				</header>
+				<ol class="service-list">
+					{
+						services.map((service) => (
+							<li class="service" data-reveal>
+								<span class="service-num">{service.num}</span>
+								<h3>{service.title}</h3>
+								<p>{service.text}</p>
+								<span class="service-icon">
+									<Icon name={serviceIcons[service.id]} size={26} />
+								</span>
+							</li>
+						))
+					}
+				</ol>
+			</div>
+		</section>
+
+		<section class="gallery" id="gallery">
+			<div class="wrap-wide">
+				<header class="section-intro" data-reveal>
+					<p class="eyebrow">Shop</p>
+					<h2>店内の様子</h2>
+					<p class="section-lead">家電、家具、日用品を店頭でご覧いただけます。並んでいる品は、日によって入れ替わります。</p>
+				</header>
+				<div class="gallery-grid">
+					{
+						gallery.map((item) => (
+							<figure class={`shot shot-${item.area}`} data-reveal>
+								<div class="media" style={`--pos: ${item.pos}`}>
+									<Image
+										src={item.src}
+										alt={item.alt}
+										class="media-img"
+										data-parallax
+										widths={item.widths}
+										sizes={item.sizes}
+										quality={76}
+									/>
+								</div>
+								<figcaption>{item.caption}</figcaption>
+							</figure>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<section class="flow" id="flow">
+			<div class="wrap">
+				<header class="section-intro" data-reveal>
+					<p class="eyebrow">Flow</p>
+					<h2>ご利用の流れ</h2>
+				</header>
+				<ol class="flow-list">
+					{
+						steps.map((step) => (
+							<li data-reveal>
+								<span>{step.num}</span>
+								<h3>{step.title}</h3>
+								<p>{step.text}</p>
+							</li>
+						))
+					}
+				</ol>
+			</div>
+		</section>
+
+		<section class="access" id="access">
+			<div class="wrap access-layout">
+				<div class="access-copy" data-reveal>
+					<p class="eyebrow">Access</p>
+					<h2>豊島の、1階。</h2>
+					<address>
+						<span>〒114-0003</span>
+						東京都北区豊島6丁目7-9<br />
+						クラン豊島A 1階
+					</address>
+					<ul class="stations">
+						<li>
+							<Icon name="pin" size={18} />
+							<span>王子神谷駅<span>徒歩14分</span></span>
+						</li>
+						<li>
+							<Icon name="pin" size={18} />
+							<span>王子駅<span>徒歩22分</span></span>
+						</li>
+					</ul>
+					<a class="text-link" href={mapLink} target="_blank" rel="noopener noreferrer">
+						Googleマップで開く
+						<Icon name="external" size={16} />
+					</a>
+				</div>
+				<div class="access-side" data-reveal>
+					<div class="hours-card">
+						<p class="eyebrow">Hours</p>
+						<dl>
+							<div>
+								<dt>平日</dt>
+								<dd>8:00–22:00</dd>
+							</div>
+							<div>
+								<dt>土日祝</dt>
+								<dd>8:00–22:00</dd>
+							</div>
+							<div>
+								<dt>定休日</dt>
+								<dd>なし</dd>
+							</div>
+						</dl>
+						<p class="hours-note">
+							<Icon name="clock" size={16} />
+							事前にご連絡いただければ、夜間の対応も可能です。
+						</p>
+					</div>
+					<div class="map" data-lenis-prevent>
+						<iframe
+							title="リサイクルセンターの地図"
+							src={mapEmbed}
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+						></iframe>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="faq" id="faq">
+			<div class="wrap">
+				<header class="section-intro" data-reveal>
+					<p class="eyebrow">Questions</p>
+					<h2>よくある質問</h2>
+				</header>
+				<dl class="faq-list">
+					{
+						faqs.map((faq) => (
+							<div data-reveal>
+								<dt>{faq.question}</dt>
+								<dd>{faq.answer}</dd>
+							</div>
+						))
+					}
+				</dl>
+			</div>
+		</section>
+
+		<section class="contact" id="contact">
+			<div class="wrap contact-layout">
+				<div data-reveal>
+					<p class="eyebrow light">Contact</p>
+					<h2>まずは、お電話を。</h2>
+					<p class="contact-lead">営業時間内はそのままおつなぎします。夜間をご希望の場合は、事前にご連絡ください。</p>
+				</div>
+				<div class="contact-main" data-reveal>
+					<a class="contact-phone" href="tel:08079691804">080-7969-1804</a>
+					<ul class="contact-links">
+						<li>
+							<a href="https://line.me/R/ti/p/@recyclecenterjapan" target="_blank" rel="noopener noreferrer">
+								<Icon name="line" />
+								<span>LINE<span>recyclecenterjapan</span></span>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.instagram.com/recyclecenterjapan/" target="_blank" rel="noopener noreferrer">
+								<Icon name="instagram" />
+								<span>Instagram<span>recyclecenterjapan</span></span>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.facebook.com/recyclecenter" target="_blank" rel="noopener noreferrer">
+								<Icon name="facebook" />
+								<span>Facebook<span>recyclecenter</span></span>
+							</a>
+						</li>
+						<li>
+							<a href="mailto:recyclecenterjapan@gmail.com">
+								<Icon name="mail" />
+								<span>Email<span>recyclecenterjapan@gmail.com</span></span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<div class="wrap footer-layout">
+			<div>
+				<p class="footer-name">リサイクルセンター</p>
+				<p class="footer-en">Recycle Center</p>
+			</div>
+			<address>
+				〒{business.postalCode} {business.addressLine}<br />
+				{business.building}
+			</address>
+			<p class="footer-hours">
+				<a href={`tel:${business.phone}`}>{business.phoneDisplay}</a><br />
+				毎日 {business.hoursDisplay}<br />
+				定休日なし
+			</p>
+			<p class="copy">© 2026 リサイクルセンター</p>
+		</div>
+	</footer>
+
+	<div class="dock">
+		<a href="tel:08079691804">
+			<Icon name="phone" size={16} />
+			電話する
+		</a>
+		<a href="#contact">お問い合わせ</a>
+	</div>
+</Layout>

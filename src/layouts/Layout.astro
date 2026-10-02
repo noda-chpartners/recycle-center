@@ -1,0 +1,136 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.scss';
+import { business, faqs, services } from '../data/site';
+
+const localHost = Astro.url.hostname === 'localhost' || Astro.url.hostname === '127.0.0.1';
+const origin = Astro.site ?? (localHost ? undefined : Astro.url.origin);
+const canonical = origin ? new URL('/', origin).href : undefined;
+const ogImage = origin ? new URL('/ogp.jpg', origin).href : '/ogp.jpg';
+const businessId = canonical ? `${canonical}#business` : '#business';
+
+const hours = {
+	'@type': 'OpeningHoursSpecification',
+	dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+	opens: business.hours,
+	closes: business.hoursClose,
+};
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': ['RecyclingCenter', 'Store'],
+			'@id': businessId,
+			name: business.name,
+			alternateName: business.nameEn,
+			description: business.description,
+			slogan: business.slogan,
+			url: canonical,
+			image: ogImage,
+			telephone: business.phoneE164,
+			email: business.email,
+			currenciesAccepted: 'JPY',
+			knowsLanguage: 'ja',
+			address: {
+				'@type': 'PostalAddress',
+				postalCode: business.postalCode,
+				addressCountry: 'JP',
+				addressRegion: business.region,
+				addressLocality: business.locality,
+				streetAddress: business.streetAddress,
+			},
+			areaServed: {
+				'@type': 'AdministrativeArea',
+				name: business.areaServed,
+			},
+			hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`〒${business.postalCode} ${business.region}${business.locality}${business.streetAddress}`)}`,
+			openingHoursSpecification: hours,
+			contactPoint: {
+				'@type': 'ContactPoint',
+				telephone: business.phoneE164,
+				email: business.email,
+				contactType: 'customer service',
+				availableLanguage: ['Japanese'],
+				areaServed: 'JP',
+				hoursAvailable: hours,
+			},
+			hasOfferCatalog: {
+				'@type': 'OfferCatalog',
+				name: 'サービス',
+				itemListElement: services.map((service) => ({
+					'@type': 'Offer',
+					itemOffered: {
+						'@type': 'Service',
+						name: service.title,
+						description: service.text,
+						provider: { '@id': businessId },
+						areaServed: business.areaServed,
+					},
+				})),
+			},
+			sameAs: [business.sns.instagram, business.sns.facebook, business.sns.line],
+		},
+		{
+			'@type': 'FAQPage',
+			mainEntity: faqs.map((faq) => ({
+				'@type': 'Question',
+				name: faq.question,
+				acceptedAnswer: {
+					'@type': 'Answer',
+					text: faq.answer,
+				},
+			})),
+		},
+	],
+};
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{business.title}</title>
+		<meta name="description" content={business.description} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<meta name="format-detection" content="telephone=yes" />
+		{canonical && <link rel="canonical" href={canonical} />}
+		<meta name="theme-color" content="#161310" />
+		<meta property="og:site_name" content={business.name} />
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="ja_JP" />
+		<meta property="og:title" content={business.title} />
+		<meta property="og:description" content={business.description} />
+		{canonical && <meta property="og:url" content={canonical} />}
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:alt" content="リサイクルセンターの店舗外観と店名" />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={business.title} />
+		<meta name="twitter:description" content={business.description} />
+		<meta name="twitter:image" content={ogImage} />
+		<meta name="twitter:image:alt" content="リサイクルセンターの店舗外観と店名" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<Font cssVariable="--font-mincho" />
+		<Font cssVariable="--font-gothic" />
+		<Font cssVariable="--font-latin" />
+		<script is:inline>
+			if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				document.documentElement.classList.add('is-motion');
+			}
+		</script>
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	</head>
+	<body>
+		<a class="skip" href="#main">本文へスキップ</a>
+		<slot />
+		<script>
+			import '../scripts/motion.ts';
+		</script>
+	</body>
+</html>
