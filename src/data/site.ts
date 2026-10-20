@@ -24,7 +24,7 @@ export const business = {
 		{ name: '王子駅', walk: '徒歩22分' },
 	],
 	sns: {
-		line: 'https://line.me/R/ti/p/@recyclecenterjapan',
+		line: 'https://line.me/R/ti/p/recyclecenterjapan',
 		lineId: 'recyclecenterjapan',
 		instagram: 'https://www.instagram.com/recyclecenterjapan/',
 		instagramId: 'recyclecenterjapan',

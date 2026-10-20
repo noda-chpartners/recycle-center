@@ -4,6 +4,12 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import { business, faqs, mapQuery, services } from '../data/site';
 import hero from '../assets/images/PHOTO-2026-09-10-23-45-32(3).jpg';
+import heroSky from '../assets/images/hero-sky.jpg';
+import burst from '../assets/images/badge-burst.png';
+import iconFee from '../assets/images/icon-fee.png';
+import iconTruck from '../assets/images/icon-truck.png';
+import iconCheck from '../assets/images/icon-check.png';
+import sparkle from '../assets/images/sparkle.png';
 import appliances from '../assets/images/PHOTO-2026-09-10-23-45-32(1).jpg';
 import washers from '../assets/images/PHOTO-2026-09-10-23-49-22(2).jpg';
 import storage from '../assets/images/PHOTO-2026-09-10-23-45-32(4).jpg';
@@ -82,6 +88,12 @@ const gallery = [
 	},
 ];
 
+const promises = [
+	{ icon: iconFee, label: '基本料金無料' },
+	{ icon: iconTruck, label: '出張費無料' },
+	{ icon: iconCheck, label: '追加の条件は一切なし' },
+];
+
 const steps = [
 	{
 		num: '01',
@@ -107,7 +119,7 @@ const steps = [
 			<span class="brand-mark" aria-hidden="true">
 				<svg viewBox="0 0 32 32" fill="none">
 					<path d="M6 10h20M6 16h13M6 22h20" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"></path>
-					<path d="M6 16h13" stroke="#C9954E" stroke-width="2.2" stroke-linecap="square"></path>
+					<path d="M6 16h13" stroke="#E23B32" stroke-width="2.2" stroke-linecap="square"></path>
 				</svg>
 			</span>
 			<span class="brand-text">
@@ -125,9 +137,9 @@ const steps = [
 		</nav>
 
 		<div class="header-actions">
-			<a class="header-phone" href="tel:08079691804">
-				<Icon name="phone" size={16} />
-				<span>080-7969-1804</span>
+			<a class="header-cta" href={`tel:${business.phone}`}>
+				<Icon name="phone" size={18} />
+				<span>電話する</span>
 			</a>
 			<button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu-panel" aria-label="メニューを開く">
 				<span></span>
@@ -142,58 +154,82 @@ const steps = [
 		<a href="#flow" data-nav>流れ</a>
 		<a href="#access" data-nav>アクセス</a>
 		<a href="#faq" data-nav>質問</a>
-		<a href="#contact" data-nav>お問い合わせ</a>
-		<a class="panel-phone" href="tel:08079691804">080-7969-1804</a>
+		<a class="panel-cta" href="#contact" data-nav>お問い合わせ</a>
+		<a class="panel-phone" href={`tel:${business.phone}`}>{business.phoneDisplay}</a>
 	</nav>
 
 	<main id="main">
 		<section class="hero" id="top">
-			<div class="hero-copy">
+			<div class="hero-sky" aria-hidden="true">
+				<Image
+					src={heroSky}
+					alt=""
+					class="hero-sky-img"
+					widths={[768, 1280]}
+					sizes="100vw"
+					quality={76}
+					priority
+				/>
+				<Image src={sparkle} alt="" class="hero-sparkle" widths={[640, 1024]} sizes="100vw" />
+			</div>
+			<div class="hero-banner">
+				<p class="hero-kicker" data-hero-fade>北区豊島のリサイクルセンター</p>
 				<h1 class="hero-title">
-					<span class="hero-kicker" data-hero-fade>北区豊島のリサイクルセンター</span>
-					<span class="line"><span class="line-inner" data-hero-line>まだ<span class="punct">、</span></span></span>
-					<span class="line"><span class="line-inner" data-hero-line>使える<span class="punct">。</span></span></span>
+					<span class="line"><span class="line-inner" data-hero-line>どこより安い、</span></span>
+					<span class="line"><span class="line-inner" data-hero-line>まずご相談ください。</span></span>
 				</h1>
 				<p class="hero-lead" data-hero-fade>
-					家具も家電も、次の暮らしへ。不用品の回収から、引越し、片付け、中古品の販売まで。北区豊島のリサイクルセンターです。
+					家具も家電も、次の暮らしへ。不用品の回収から、引越し、片付け、中古品の販売まで。
 				</p>
-				<div class="hero-actions" data-hero-fade>
-					<a class="btn btn-fill" href="tel:08079691804">
-						<Icon name="phone" size={18} />
-						080-7969-1804
+				<ul class="promise-list" data-hero-fade>
+					{
+						promises.map((item) => (
+							<li>
+								<span class="promise-art">
+									<Image src={burst} alt="" class="promise-burst" width={120} height={120} />
+									<Image src={item.icon} alt="" class="promise-icon" width={72} height={72} />
+								</span>
+								<span>{item.label}</span>
+							</li>
+						))
+					}
+				</ul>
+				<div class="cta-row" data-hero-fade>
+					<a class="cta cta-mail" href={`mailto:${business.email}`}>
+						<Icon name="mail" size={18} />
+						メール
 					</a>
-					<a class="btn btn-ghost" href="#access">
-						場所を見る
-						<Icon name="arrow" size={18} />
+					<a class="cta cta-line" href={business.sns.line} target="_blank" rel="noopener noreferrer">
+						<Icon name="line" size={18} />
+						LINE
+					</a>
+					<a class="cta cta-phone" href={`tel:${business.phone}`}>
+						<Icon name="phone" size={20} />
+						<span>
+							<small>お見積り・ご相談</small>
+							{business.phoneDisplay}
+						</span>
 					</a>
 				</div>
-				<dl class="hero-meta" data-hero-fade>
-					<div>
-						<dt>営業時間</dt>
-						<dd>8:00–22:00</dd>
-						<dd>定休日なし</dd>
-					</div>
-					<div>
-						<dt>最寄駅</dt>
-						<dd>王子神谷駅 徒歩14分</dd>
-						<dd>王子駅 徒歩22分</dd>
-					</div>
-				</dl>
 			</div>
-			<div class="hero-visual">
+			<figure class="hero-photo" data-hero-fade>
 				<div class="media" style="--pos: center 32%">
 					<Image
 						src={hero}
 						alt="東京都北区豊島にあるリサイクルセンターの店舗外観。夜間の看板に店名と電話番号が掲げられている"
 						class="hero-img"
-						widths={[640, 960, 1200]}
-						sizes="(max-width: 900px) 100vw, 58vw"
-						quality={82}
-						priority
+						widths={[480, 800, 1200]}
+						sizes="(max-width: 900px) 100vw, 34vw"
+						quality={80}
 					/>
 				</div>
-				<p class="hero-vertical">何でもお電話ください</p>
-			</div>
+				<figcaption>豊島の店舗</figcaption>
+			</figure>
+			<ul class="hours-strip">
+				<li>毎日 {business.hoursDisplay}</li>
+				<li>定休日なし</li>
+				<li>夜間は事前連絡</li>
+			</ul>
 		</section>
 
 		<div class="marquee" aria-hidden="true">
@@ -211,9 +247,7 @@ const steps = [
 			<div class="wrap about-layout">
 				<div class="about-copy">
 					<p class="eyebrow" data-reveal>About</p>
-					<h2 data-reveal>
-						手放した道具が、<br />もう一度、誰かの役に立つ。
-					</h2>
+					<h2 data-reveal>手放した道具が、もう一度、<span>誰かの役に立つ。</span></h2>
 					<div class="about-body" data-reveal>
 						<p>
 							まだ使えるものは、次に必要とする人へ。役割を終えたものは、きちんと回収する。リサイクルセンターは、その両方を豊島の店舗で引き受けています。
@@ -420,37 +454,52 @@ const steps = [
 		</section>
 
 		<section class="contact" id="contact">
+			<Image src={sparkle} alt="" class="contact-sparkle" widths={[640, 1024]} sizes="100vw" />
 			<div class="wrap contact-layout">
 				<div data-reveal>
-					<p class="eyebrow light">Contact</p>
-					<h2>まずは、お電話を。</h2>
+					<p class="eyebrow">Contact</p>
+					<h2>どこより安い、<br />まずご相談ください。</h2>
+					<ul class="promise-list promise-list-plain">
+						{
+							promises.map((item) => (
+								<li>
+									<Image src={item.icon} alt="" class="promise-icon" width={56} height={56} />
+									<span>{item.label}</span>
+								</li>
+							))
+						}
+					</ul>
 					<p class="contact-lead">営業時間内はそのままおつなぎします。夜間をご希望の場合は、事前にご連絡ください。</p>
 				</div>
 				<div class="contact-main" data-reveal>
-					<a class="contact-phone" href="tel:08079691804">080-7969-1804</a>
-					<ul class="contact-links">
+					<div class="cta-row cta-row-stack">
+						<a class="cta cta-phone cta-phone-lg" href={`tel:${business.phone}`}>
+							<Icon name="phone" size={26} />
+							<span>
+								<small>お見積り・ご相談</small>
+								{business.phoneDisplay}
+							</span>
+						</a>
+						<a class="cta cta-line" href={business.sns.line} target="_blank" rel="noopener noreferrer">
+							<Icon name="line" size={20} />
+							LINEで連絡
+						</a>
+						<a class="cta cta-mail" href={`mailto:${business.email}`}>
+							<Icon name="mail" size={20} />
+							メールで連絡
+						</a>
+					</div>
+					<ul class="social-links">
 						<li>
-							<a href="https://line.me/R/ti/p/@recyclecenterjapan" target="_blank" rel="noopener noreferrer">
-								<Icon name="line" />
-								<span>LINE<span>recyclecenterjapan</span></span>
+							<a href={business.sns.instagram} target="_blank" rel="noopener noreferrer">
+								<Icon name="instagram" size={18} />
+								Instagram
 							</a>
 						</li>
 						<li>
-							<a href="https://www.instagram.com/recyclecenterjapan/" target="_blank" rel="noopener noreferrer">
-								<Icon name="instagram" />
-								<span>Instagram<span>recyclecenterjapan</span></span>
-							</a>
-						</li>
-						<li>
-							<a href="https://www.facebook.com/recyclecenter" target="_blank" rel="noopener noreferrer">
-								<Icon name="facebook" />
-								<span>Facebook<span>recyclecenter</span></span>
-							</a>
-						</li>
-						<li>
-							<a href="mailto:recyclecenterjapan@gmail.com">
-								<Icon name="mail" />
-								<span>Email<span>recyclecenterjapan@gmail.com</span></span>
+							<a href={business.sns.facebook} target="_blank" rel="noopener noreferrer">
+								<Icon name="facebook" size={18} />
+								Facebook
 							</a>
 						</li>
 					</ul>
@@ -479,10 +528,17 @@ const steps = [
 	</footer>
 
 	<div class="dock">
-		<a href="tel:08079691804">
-			<Icon name="phone" size={16} />
-			電話する
+		<a class="cta cta-mail" href={`mailto:${business.email}`}>
+			<Icon name="mail" size={16} />
+			メール
 		</a>
-		<a href="#contact">お問い合わせ</a>
+		<a class="cta cta-line" href={business.sns.line} target="_blank" rel="noopener noreferrer">
+			<Icon name="line" size={16} />
+			LINE
+		</a>
+		<a class="cta cta-phone" href={`tel:${business.phone}`}>
+			<Icon name="phone" size={16} />
+			電話
+		</a>
 	</div>
 </Layout>
